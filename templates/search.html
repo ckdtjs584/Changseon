@@ -4,16 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Documents</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
 </head>
 <body>
-    <h1>Search Results:</h1>
-    <h1>Search Results:</h1>
-    <h1>Search Results:</h1>
-    <h1>Search Results:</h1>
-    <h1>Search Results:</h1>
-    <h1>Search Results:</h1>
-    <h1>Search Results:{{jobs}}</h1>
-
+    <main class="container">
+        <hgroup>
+            <h1>Search Results: {{keyword}}</h1>
+            <a target="_blank" href="/export?keyword={{keyword}}">Export file</a>
+        </hgroup>
+        <table>
+            <thead>
+                <tr>
+                    <th>Job</th>
+                    <th>company</th>
+                    <th>link</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for job in jobs %}
+                <tr>
+                <td>{{job['job_name']}}</td>
+                <td>{{job['company']}}</td>
+                <td><a href="{{job['link']}}" target="_blank">Clink Here!</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        
+    </main>
+    
+    
     
 </body>
 </html>

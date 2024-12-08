@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import pprint
 
+
 # url 에 몇 개의 page가 있는지 반환하는 function
 def get_page_number(url):
     response = requests.get(url, headers={"User-Agent" : "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"})
@@ -12,7 +13,7 @@ def get_page_number(url):
 
 
 # url 내부 job_data를 추출하여 반환하는 function
-def scrape_page(url):
+def berlinstartup_scrape_page(url):
     #웹에서 크롤링을 막는 것으로 추정되어 헤더를 수정.
     response = requests.get(url, headers={"User-Agent" : "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"})
     soup = BeautifulSoup(response.content, "html.parser")
@@ -23,9 +24,11 @@ def scrape_page(url):
     
     for job in jobs:
         job_data = {
-            "jobs_name" : job.find("h4", class_ = "bjs-jlid__h").find("a").get_text(),
-            "company_name" : job.find("a", class_ = "bjs-jlid__b").get_text(),
-            "descryption" : job.find("div", class_ = "bjs-jlid__description").get_text()
+            "job_name" : job.find("h4", class_ = "bjs-jlid__h").find("a").get_text(),
+            "link" : job.find("h4", class_ = "bjs-jlid__h").find("a")["href"],
+            "company" : job.find("a", class_ = "bjs-jlid__b").get_text(),
+            "descryption" : job.find("div", class_ = "bjs-jlid__description").get_text(),
+            
         }
         jobs_data.append(job_data)
         
@@ -54,28 +57,29 @@ def extract_skill(url):
     
 
 
+if __name__ == '__main__':
 
 
-# 아래 url은 pagination 필요함.
-url = "https://www.berlinstartupjobs.com/engineering/"
+    # 아래 url은 pagination 필요함.
+    url = "https://www.berlinstartupjobs.com/engineering/"
 
-# "https://www.berlinstartupjobs.com/engineering/"의 모든 페이지에 있는 job data(직무, 회사, 설명) 리스트
-all_jobs_data = []
+    # "https://www.berlinstartupjobs.com/engineering/"의 모든 페이지에 있는 job data(직무, 회사, 설명) 리스트
+    all_jobs_data = []
 
-# 모든 스킬 URL이 들어가는 리스트
-all_skill_url = []
+    # 모든 스킬 URL이 들어가는 리스트
+    all_skill_url = []
 
-# 각 페이지별 job data를 전체 리스트에 추가
-for page in range(get_page_number(url)+1):
-    all_jobs_data.append(scrape_page(f"{url}page/{page}"))
-
-
-# "https://www.berlinstartupjobs.com/engineering/" 측면에 존재하는 여러가지 skill들을 담는 리스트 (saas, python, 등등)
-all_skill_url = extract_skill("https://www.berlinstartupjobs.com/engineering/")
-
-# 각각의 skill 페이지에서 job data를 추출
-for skill_url in all_skill_url:
-    all_jobs_data.append(scrape_page(skill_url))
+    # 각 페이지별 job data를 전체 리스트에 추가
+    for page in range(get_page_number(url)+1):
+        all_jobs_data.append(berlinstartup_scrape_page(f"{url}page/{page}"))
 
 
-pprint.pprint(all_jobs_data)
+    # "https://www.berlinstartupjobs.com/engineering/" 측면에 존재하는 여러가지 skill들을 담는 리스트 (saas, python, 등등)
+    all_skill_url = extract_skill("https://www.berlinstartupjobs.com/engineering/")
+
+    # 각각의 skill 페이지에서 job data를 추출
+    for skill_url in all_skill_url:
+        all_jobs_data.append(berlinstartup_scrape_page(skill_url))
+
+
+    pprint.pprint(all_jobs_data) 

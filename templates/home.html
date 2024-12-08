@@ -4,11 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
 </head>
 <body>
+    <main class="container">
     <h1>Job scrapper</h1>
     <h4>What job do you want?</h4>
-    <form><input type="text" name="keyword" placeholder="write keyword plase" /></form>
-    <button>Search</button>
+    <form action="/search">
+        
+        <input type="text" name="keyword" placeholder="write keyword please" />
+        <button>Search</button>
+    </form>
+    
+    </main>
+    
 </body>
 </html>
