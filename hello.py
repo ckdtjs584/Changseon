@@ -1,5 +1,10 @@
 from pptx import Presentation
 from pptx.enum.shapes import MSO_SHAPE_TYPE
+import tkinter as tk
+from tkinter import filedialog
+import time
+import tkinter.messagebox as msgbox
+
 
 
 
@@ -42,8 +47,20 @@ def extract_notes_from_pptx(file_path):
     
     return (notes_data, slide_texts)
 
-file_path = r"D:\test.pptx" # PPT파일 경로
-output_path = r"D:\Output\output.txt" #
+
+file_path = "D:/test.pptx"  # 대상 파워포인트 파일 경로
+window = tk.Tk()
+
+msgbox.showinfo("안내", "PPT 파일을 선택하세요.")
+window.file = filedialog.askopenfile()
+file_path = window.file.name
+# file_path = r"D:\test.pptx" # PPT파일 경로
+
+
+msgbox.showinfo("안내", f"내용이 작성될 txt파일을 선택하세요.\n(없다면 우클릭 > 새로만들기 > 텍스트 문서로 만들고 클릭)")
+window.file = filedialog.askopenfile()
+output_path = window.file.name
+# output_path = r"D:\Output\output.txt" #
 notes,slide_texts = extract_notes_from_pptx(file_path)
 
 
@@ -66,3 +83,4 @@ with open(output_path, 'w', encoding='utf-8') as f:
         f.write("-" * 40)
         f.write(f"\n\n\n\n")
 
+exit()
