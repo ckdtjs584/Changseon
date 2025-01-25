@@ -4,7 +4,7 @@ import tkinter as tk
 from tkinter import filedialog
 import time
 import tkinter.messagebox as msgbox
-
+import pdfplumber
 
 
 
@@ -48,9 +48,16 @@ def extract_notes_from_pptx(file_path):
     return (notes_data, slide_texts)
 
 
-file_path = "D:/test.pptx"  # 대상 파워포인트 파일 경로
-window = tk.Tk()
+def extract_PPT():
+    return 
 
+def extract_PDF():
+    return 
+
+file_path = "D:/test.pptx"  # 대상 파워포인트 파일 경로
+
+window = tk.Tk()
+window.withdraw()
 msgbox.showinfo("안내", "PPT 파일을 선택하세요.")
 window.file = filedialog.askopenfile()
 file_path = window.file.name
@@ -70,17 +77,16 @@ with open(output_path, 'w', encoding='utf-8') as f:
     for slide_num, note in notes:
         
         f.write(f"(슬라이드 {slide_num})\n\n")
-        f.write(f"메모  \n{note}\n\n")
+        f.write(f"메모  \n{note}\n")
         f.write(f"내부 텍스트  \n")
         j = 1
 
         for k in range(len(slide_texts[i][1])):
-            f.write(f"({k+1})  {slide_texts[i][1][k]}\n")
+            f.write(f"{slide_texts[i][1][k]}\n")
             
         
         i += 1
-        f.write(f"\n\n\n\n")
         f.write("-" * 40)
-        f.write(f"\n\n\n\n")
+        f.write(f"\n")
 
 exit()
